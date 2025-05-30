@@ -1,0 +1,10 @@
+#form-body,#container{
+    border:2px solid black;
+    width:60%;
+    margin:auto;
+    height:800 px;
+    margin-top:200px;
+}
+#main{
+    border: 2px grey;
+}
