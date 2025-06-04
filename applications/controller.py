@@ -15,7 +15,7 @@ def login():
                 return redirect('/admin')
             if username==exist.username :
                 if password==exist.password:
-                    return render_template('user.html')
+                    return redirect(f'/user/{exist.id}')
                 return "INCORRECT PASSWORD"
         return "NO SUCH USERS"
     return render_template('login.html')
@@ -83,7 +83,7 @@ def edit_lot(lot_id):
                 lot.location=request.form.get('location')
                 lot.pincode=request.form.get('pincode')
                 lot.price=request.form.get('price')
-                lot.max_spot=request.form.get('max_spot')
+                lot.max_spot=lot.max_spot
 
                 if lot.lot_name!='' and lot.location!='' and lot.pincode!='' and lot.price!='' and lot.max_spot!='':
                     db.session.commit()
@@ -93,4 +93,10 @@ def edit_lot(lot_id):
                 return redirect('/admin')
         return render_template('update_lot.html',lot=lot)
     return "No subject with this id"
+
+@app.route('/user/<int:user_id>',methods=['GET','POST'])
+def user(user_id):
+    user=User.query.filter(User.id==user_id).first()
+    lots=ParkingLot.query.all()
+    return render_template('user.html',user=user,lots=lots)
 
