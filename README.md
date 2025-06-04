@@ -35,4 +35,3 @@ It is a multi-user app that manages different parking lots, parking spots and pa
 **(#)RUNNING THE APP**
 ## python app.py
 
-Jigyasa 
