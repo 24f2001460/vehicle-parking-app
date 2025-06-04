@@ -39,8 +39,10 @@ class Reservation(db.Model):
     __tablename__ = 'reservations'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     booking_time = db.Column(db.DateTime, default=datetime.utcnow)
-    release_time = db.Column(db.DateTime, default='---')
-    parking_cost = db.Column(db.Integer, default='---')
+    release_time = db.Column(db.DateTime)
+    parking_cost = db.Column(db.Integer)
+    vehicle_num = db.Column(db.String(20),nullable=False)
 
     spot_id = db.Column(db.Integer, db.ForeignKey('parkingspots.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    lot_id = db.Column(db.Integer , db.ForeignKey('parkinglots.id'), nullable=False)
