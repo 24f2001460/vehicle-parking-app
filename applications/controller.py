@@ -184,7 +184,7 @@ def edit_profile(user_id):
             return redirect(f'/user/{user.id}')
     return render_template('update_profile.html',user=user)
 
-@app.route('/admin_users_list',methods=['GET'])
+@app.route('/admin_users_list',methods=['GET','POST'])
 def admin_users_list():
     users=User.query.filter(User.id!=1).all()
     return render_template('user_list.html',users=users)#left->Frontend
