@@ -17,7 +17,7 @@ def create_app(): # Defines a function that creates and configures the Flask app
 def create_admin():
     admin = User.query.first()
     if not admin:
-        admin = User(id=1,password='12345',username='Admin', phone='12345',full_name='adminn')
+        admin = User(id=1,password='12345',username='Admin@gmail.com', phone='12345',full_name='adminn')
         db.session.add(admin)
         db.session.commit()
 
