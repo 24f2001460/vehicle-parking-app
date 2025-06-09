@@ -54,7 +54,7 @@
                      <span class="input-group-text bg-primary text-white">
                         <i class="bi bi-car-front-fill text-warning me-1"></i>
                     </span>
-                <input type="integer" class="form-control" id="max_spot" name="max_spot" value="{{lot.max_spot}}" disabled>
+                <input type="number"  id="max_spot" name="max_spot" value="{{lot.max_spot}}" min="{{lot.occupied_count}}">
                 </div>
             </div>
             <button type="submit" class="btn btn-secondary btn-lg w-100 mb-2" value="Save" name="action">
