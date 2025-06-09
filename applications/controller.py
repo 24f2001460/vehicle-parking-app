@@ -189,7 +189,7 @@ def admin_users_list():
     users=User.query.filter(User.id!=1).all()
     return render_template('user_list.html',users=users)#left->Frontend
 
-@app.route('/admin_summary',methods=["GET","POST"])
+@app.route('/admin_summary',methods=["GET"])
 def admin_summary():
     total_users=User.query.filter(User.id!=1).count()
     total_lots=ParkingLot.query.count()
