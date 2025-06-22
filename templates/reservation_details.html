@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Spot Details | QuizMaster Admin</title>
+<title>Reserved Details</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <style>
   body {
@@ -40,15 +40,18 @@
           <th>Vehicle Number</th>
         </tr>
       </thead>
+
       <tbody>
+         {% for reservation in reservations %}
         <tr>
-          <td>{{ spot.reservations[0].id }}</td>
-          <td>{{ spot.reservations[0].lot_id }}</td>
-          <td>{{ spot.reservations[0].spot_id }}</td>
-          <td>{{ spot.reservations[0].user_id }}</td>
-          <td>{{ spot.reservations[0].booking_time }}</td>
-          <td>{{ spot.reservations[0].vehicle_num }}</td>
+          <td>{{ reservation.id }}</td>
+          <td>{{ reservation.lot_id }}</td>
+          <td>{{ reservation.spot_id }}</td>
+          <td>{{ reservation.user_id }}</td>
+          <td>{{ reservation.booking_time }}</td>
+          <td>{{ reservation.vehicle_num }}</td>
         </tr>
+         {% endfor %}
       </tbody>
     </table>
     <div class="text-center">

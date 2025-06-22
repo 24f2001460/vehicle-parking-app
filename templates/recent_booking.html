@@ -5,17 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <title> Reservations</title>
 </head>
 <body>
   <div class="container py-4">
-    <nav class="nav justify-content-center">
-        <a class="nav-link text-primary fw-bold" href="/user/{{user.id}}">Home</a>
-        <a class="nav-link text-primary fw-bold" href="/recent_booking/{{user.id}}">Recent Booking</a>
-        <a class="nav-link text-primary fw-bold" href="#">Summary</a>
-        <a class="nav-link text-primary fw-bold" href="/login">Log Out</a>
-        <a class="nav-link text-primary fw-bold" href="/edit_profile/{{user.id}}">Edit Profile</a>
-    </nav>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary px-4">
+<a class="navbar-brand" href="/user/{{user.id}}" style="color: white;">Home</a>
+
+  <div class="collapse navbar-collapse justify-content-between" id="navbarContent">
+    <form class="d-flex align-items-center" method="POST" action="/user_search/{{user.id}}">
+      <select class="form-select me-2" name="field" style="width: auto;">
+        <option value="lot_id/lot_name">Lot id/ Lot name</option>
+        <option value="user_id">Parking Lot Name/ Location</option>
+      </select>
+      <input class="text" type="search" name="string" placeholder="Search..." required>
+      <button class="btn btn-outline-light" type="submit">Search</button>
+    </form>
+        <a href="#"  style="color:white;">Recent Booking</a>
+        <a style="color:white" href="/user_summary/{{user.id}}">Summary</a>
+        <a  href="/login"  style="color:white;">Log Out</a>
+        <strong> Welcome,
+        <a href="/edit_profile/1" style="color: black;" class="fw-bold">
+          {{ user.full_name.split(" ")[0] }}
+        </a>
+    </strong>
+  </div>
+</nav>
+
     <h2 class="text-center mb-4 fw-bold"> Reservations</h2>
 
     <form action="" method="POST">
