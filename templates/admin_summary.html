@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary px-4">
+<a class="navbar-brand" href="/admin" style="color: white;">Home</a>
+      <div class="collapse navbar-collapse justify-content-between" id="navbarContent">
+    <form class="d-flex align-items-center" method="POST" action="/admin_search">
+      <select class="form-select me-2" name="field" style="width: auto;">
+        <option value="user_id/username">User id/Username</option>
+        <option value="lot_name/location">Parking Lot Name/ Location</option>
+      </select>
+      <input class="text" type="search" name="string" placeholder="Search..." required>
+      <button class="btn btn-outline-light" type="submit">Search</button>
+    </form>
+        <a href="/user_list"  style="color:white;">Users</a>
+        <a style="color:white" href="#">Summary</a>
+        <a  href="/login"  style="color:rgb(223, 223, 228);">Log Out</a>
+        <strong> Welcome,Admin
+    </strong>
+  </div>
+    </nav>
+  <div class="container mt-4"></div>
+      <div class="card mb-4">
+        <div class="card-body">
+          <h4 class="card-title text-center">Platform Overview</h4>
+          <hr>
+        <div class="row text-center">
+          <div class="col-md-2"><strong>Total Users:</strong> {{ total_user }}</div>
+          <div class="col-md-2"><strong>Total Lots:</strong> {{ total_lot }}</div>
+          <div class="col-md-2"><strong>Active Bookings:</strong> {{ active_reservation }}</div>
+          <div class="col-md-2"><strong>Total Spots:</strong> {{ total_spots }}</div>
+          <div class="col-md-4"><strong>Reservations on Platform:</strong> {{ total_reservations }}</div>
+        </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-4">
+          <div class="card">
+            <div class="card-header bg-primary text-white text-center">Reservation Metric</div>
+            <div class="card-body text-center">
+              <img src="{{ url_for('static', filename='reservation_count_bar_chart.png') }}" class="img-responsive" alt=" Reservation Metric" style="max-width:100%; height:auto;">
+            </div>
+      </div>
+    </div>
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-header bg-primary text-white text-center">Spot Booking</div>
+        <div class="card-body text-center">
+          <img src="{{ url_for('static', filename='spot_status_pie_chart.png') }}" class="img-fluid" alt="Spot Booking Chart">
+        </div>
+      </div>
+    </div>
+  </div>
+    
+      <div class="row">
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-header bg-success text-white text-center">Lotwise Revenue</div>
+        <div class="card-body text-center">
+          <img src="{{ url_for('static', filename='revenue_bar_chart.png') }}" class="img-fluid" alt="Revenue">
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-header bg-success text-white text-center">Today's Reservation</div>
+        <div class="card-body">
+          <table class="table table-striped text-center table-bordered">
+            <thead class="table-primary">
+              <tr>
+                <th>Full Name</th>
+                <th>Lot Name @ Location</th>
+                <th>Vehicle Number</th>
+                <th>Parking Duration</th>
+              {% for i in todays_reservations %}
+                <tr>
+                  <td>{{i.users.full_name}}</td>
+                  <td>{{i.parkinglot.lot_name}}@{{i.parkinglot.location}}</td>
+                  <td>{{i.vehicle_num}}</td>
+                  <td>
+                     {% if i.release_time %}
+                            {{ (i.release_time - i.booking_time).total_seconds() // 3600 }} hr
+                            {{ ((i.release_time - i.booking_time).total_seconds() % 3600) // 60 }} min
+                            {{ ((i.release_time - i.booking_time).total_seconds() % 60) | round(0, 'floor') | int }} sec
+                          {% else %}
+                            Ongoing
+                      {% endif %}
+                  </td>
+                </tr>
+                  {% endfor %}
+
+</body>
+</html>

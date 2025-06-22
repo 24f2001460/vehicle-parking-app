@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Summary</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary px-4">
+<a class="navbar-brand" href="/user/{{user.id}}" style="color: white;">Home</a>
+
+  <div class="collapse navbar-collapse justify-content-between" id="navbarContent">
+    <form class="d-flex align-items-center" method="POST" action="/user_search{{user.id}}">
+      <select class="form-select me-2" name="field" style="width: auto;">
+        <option value="lot_id/lot_name">Lot id/ Lot name</option>
+        <option value="user_id">Parking Lot Name/ Location</option>
+      </select>
+      <input class="text" type="search" name="string" placeholder="Search..." required>
+      <button class="btn btn-outline-light" type="submit">Search</button>
+    </form>
+        <a href="/recent_booking/{{user.id}}"  style="color:white;">Recent Booking</a>
+        <a style="color:white" href="#;">Summary</a>
+        <a  href="/login"  style="color:white;">Log Out</a>
+        <strong> Welcome,
+        <a href="/edit_profile/{{user.id}}" style="color: black;" class="fw-bold">
+          {{ user.full_name.split(" ")[0] }}
+        </a>
+    </strong>
+  </div>
+</nav>
+
+<div class="container py-4">
+    <div class="row mb-4">
+            <h2 class="mb-3 text-center  fw-bold">Your Summary </h2>
+            <div class="bg-light p-4  text-center" style="border: 4px solid black;">
+                <p><strong>Total Parking Hours:</strong> {{ total_hours }} hrs</p>
+                <p><strong>Total Amount Spent:</strong> ₹{{ total_cost }}</p>
+                <p><strong>Average Parking Duration:</strong> {{ avg_duration}} hrs</p>
+                <p><strong>
+                Number of Current Active Bookings: </strong>{{ active_booking }}</p>
+                <hr>
+               <strong>Most Visited Lot: {% if reservations %}{{ most_visited_lot.lot_name }}@{{most_visited_lot.location}} {% else %} No reservation yet {% endif %}</strong>
+            </div>
+            </div>
+    {% if reservations %}
+    <div class="row g-5">
+        <div class="col-md-6">
+            <div class="card ">
+                <div class="card-header bg-primary text-white">Total Spent per Lot</div>
+                <div class="card-body text-center">
+                    <img src="{{ url_for('static', filename='user_spending_per_lot.png') }}" class="img-responsive" alt="Spent Chart" style="max-width:100%; height:auto;">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card ">
+                <div class="card-header bg-primary text-white">Reservation per Lot</div>
+                <div class="card-body text-center">
+                    <img src="{{ url_for('static', filename='user_reservation_count.png') }}" class="img-responsive" alt="Reservation Chart" style="max-width:100%; height:auto;">
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="alert alert-warning text-center mt-4">
+        No reservation data  is available.Please book a spot
+    </div>
+     {% endif %}
+</div>
+</body>
+</html>
