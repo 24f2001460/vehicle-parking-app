@@ -1,5 +1,10 @@
 from .database import db
+from zoneinfo import ZoneInfo
+from sqlalchemy import DateTime
 from datetime import datetime
+
+def get_local_time():
+    return datetime.now(ZoneInfo("Asia/Kolkata"))
 
 class User(db.Model):
     __tablename__='users'
@@ -38,8 +43,8 @@ class ParkingSpot(db.Model):
 class Reservation(db.Model):
     __tablename__ = 'reservations'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    booking_time = db.Column(db.DateTime, default=datetime.utcnow)
-    release_time = db.Column(db.DateTime)
+    booking_time = db.Column(db.DateTime(timezone=True), default=get_local_time)
+    release_time = db.Column(db.DateTime(timezone=True))
     parking_cost = db.Column(db.Integer)
     vehicle_num = db.Column(db.String(20),nullable=False)
 
