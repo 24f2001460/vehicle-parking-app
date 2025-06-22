@@ -468,6 +468,7 @@ def admin_search():
         return redirect(url_for('user_list', q=string))
     if field=='lot_name/location':
         return redirect(url_for('admin',q=string))
+        
 
 @app.route("/user_search/<int:user_id>", methods=['GET','POST'])
 def user_search(user_id):
