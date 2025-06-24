@@ -237,7 +237,7 @@ def edit_profile(user_id):
 @app.route('/admin_users_list',methods=['GET','POST'])
 def admin_users_list():
     users=User.query.filter(User.id!=1).all()
-    return render_template('user_list.html',users=users)#left->Frontend
+    return render_template('user_list.html',users=users)
 
 @app.route('/user_summary/<int:user_id>',methods=['GET','POST'])
 def user_summary(user_id):
