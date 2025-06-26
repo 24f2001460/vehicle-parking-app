@@ -96,8 +96,8 @@ def delete_lot(lot_id):
 @app.route('/edit/<int:lot_id>',methods=['GET','POST'])
 def edit_lot(lot_id):
     lot=ParkingLot.query.filter(ParkingLot.id==lot_id).first()
-    lot.occupied_count = sum(1 for spot in lot.parkingspots if spot.status=='O')
     if lot:
+        lot.occupied_count = sum(1 for spot in lot.parkingspots if spot.status=='O')
         if request.method=='POST':
             action=request.form.get('action')
             if action=='Save':
@@ -120,7 +120,7 @@ def edit_lot(lot_id):
             if action=='Cancel':
                 return redirect('/admin')
         return render_template('update_lot.html',lot=lot)
-    return render_template('not_found_lot.html')
+    return render_template('not_found_lot.html',lot=lot)
 
 @app.route('/user/<int:user_id>',methods=['GET','POST'])
 def user(user_id):
@@ -142,26 +142,27 @@ def reserve(user_id,lot_id):
     user=User.query.filter(User.id==user_id).first()
     lot=ParkingLot.query.filter(ParkingLot.id==lot_id).first()
     spot=ParkingSpot.query.filter(ParkingSpot.lot_id==lot.id,ParkingSpot.status=="A").group_by(ParkingSpot.id).first()
-    if request.method=="POST":
-        action=request.form.get('action')
-        if action=='Reserve':
-            if spot:
+    if spot:
+        if request.method=="POST":
+            action=request.form.get('action')
+            if action=='Reserve':
+                    vehicle_num=request.form.get('vehicle_num')
+                    exist_vehicle_num=Reservation.query.filter(Reservation.vehicle_num==vehicle_num,Reservation.release_time.is_(None)).first()
+                    if not  exist_vehicle_num:
+                        new_reservation=Reservation(vehicle_num=vehicle_num,lot_id=lot.id,user_id=user.id,spot_id=spot.id)
+                        db.session.add(new_reservation)
+                        db.session.commit()
+                        modify_spot=ParkingSpot.query.filter(ParkingSpot.id==spot.id,ParkingSpot.lot_id==lot.id).first()
+                        modify_spot.status="O"
+                        db.session.commit()
+                        return redirect(f'/recent_booking/{user.id}')
+                    return render_template('exist.html',user=user,lot=lot)
+            if action=='Close':
+                return redirect(f'/user/{user.id}')
+        return render_template('reserve.html',user=user,lot=lot,spot=spot)
+    return render_template('not_found_spot.html',user=user)
 
-                vehicle_num=request.form.get('vehicle_num')
-                exist_vehicle_num=Reservation.query.filter(Reservation.vehicle_num==vehicle_num,Reservation.release_time.is_(None)).first()
-                if not  exist_vehicle_num:
-                    new_reservation=Reservation(vehicle_num=vehicle_num,lot_id=lot.id,user_id=user.id,spot_id=spot.id)
-                    db.session.add(new_reservation)
-                    db.session.commit()
-                    modify_spot=ParkingSpot.query.filter(ParkingSpot.id==spot.id,ParkingSpot.lot_id==lot.id).first()
-                    modify_spot.status="O"
-                    db.session.commit()
-                    return redirect(f'/recent_booking/{user.id}')
-                return render_template('exist.html')
-            return render_template('not_found_spot.html')
-        if action=='Close':
-            return redirect(f'/user/{user.id}')
-    return render_template('reserve.html',user=user,lot=lot,spot=spot)
+    
 @app.route('/reservation_details', methods=['GET','POST'])
 @app.route('/reservation_details/<int:spot_id>',methods=['GET','POST'])
 def reserved_details(spot_id=None):
@@ -226,12 +227,12 @@ def edit_profile(user_id):
                     return redirect(f'/user/{user.id}')
                 else:
                     return redirect('/admin')
-            return render_template('exist_user.html')
+            return render_template('exist_user.html',user=user)
         if action=="Cancel":
             if user.id!=1:
                 return redirect(f'/user/{user.id}')
             else:
-                return redirect('admin')
+                return redirect('/admin')
     return render_template('update_profile.html',user=user)
 
 @app.route('/admin_users_list',methods=['GET','POST'])
@@ -479,3 +480,24 @@ def user_search(user_id):
         return redirect(url_for('user',user_id=user_id,q1=string,q2=field))
     if field=="location/pincode":
         return redirect(url_for('user',user_id=user_id,q1=string,q2=field))
+
+
+@app.route("/read_available_spot/<int:spot_id>/<int:lot_id>",methods=['GET','POST'])
+def read_available_spot(spot_id,lot_id):
+    spot=ParkingSpot.query.filter(ParkingSpot.id==spot_id).first()
+    lot=ParkingLot.query.filter(ParkingLot.id==lot_id).first()
+    if lot:
+        if spot:
+            if request.method=='POST':
+                action=request.form.get('action')
+                if action=="Delete":
+                    db.session.delete(spot)
+                    lot.max_spot-=1
+                    db.session.commit()
+                    return redirect('/admin')
+                if action=="Cancel":
+                    return redirect('/admin')
+            return render_template('read_available_spot.html',spot=spot,lot=lot)
+        return render_template('incorrect_spot_id.html')
+    return render_template('incorrect_lot_id.html')
+
