@@ -24,13 +24,13 @@ It is a multi-user app that manages different parking lots, parking spots and pa
 ## cd vehicle-parking-app
 
 **(#)CREATING VIRTUAL ENVIRONMENT**
-## python -m venv.env
+## python -m venv .env
 
 **(#)ACTIVATING(WINDOWS)**
-## .env\Scripts\Activate
+## .env\Scripts\activate
 
-**(#)INSTALLING NEEDED PACKAGES**
-## Using pip install..
+**(#)INSTALLING NEEDED PACKAGES **
+## Using pip install -r requirement.text
 
 **(#)RUNNING THE APP**
 ## python app.py
