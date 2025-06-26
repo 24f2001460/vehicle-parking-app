@@ -50,11 +50,11 @@
               <div class="mb-3">
                 <p class="mb-1">
                   <i class="bi bi-arrow-bar-down text-success me-1"></i>
-                  <strong>Booking Time:</strong> {{ i.booking_time }}
+                  <strong>Booking Time:</strong> {{ i.booking_time.strftime("%Y-%m-%d %H:%M:%S") }}
                 </p>
                 <p class="mb-1">
                   <i class="bi bi-arrow-bar-up text-success me-1"></i>
-                  <strong>Release Time:</strong> {{ i.release_time if i.release_time else "Still Parked" }}
+                  <strong>Release Time:</strong> {{ i.release_time.strftime("%Y-%m-%d %H:%M:%S") if i.release_time else "Still Parked" }}
                 </p>
                 <p class="mb-1">
                   <i class="bi bi-currency-rupee"></i>

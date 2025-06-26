@@ -48,7 +48,7 @@
           <td>{{ reservation.lot_id }}</td>
           <td>{{ reservation.spot_id }}</td>
           <td>{{ reservation.user_id }}</td>
-          <td>{{ reservation.booking_time }}</td>
+          <td>{{ reservation.booking_time.strftime("%Y-%m-%d %H:%M:%S") }}</td>
           <td>{{ reservation.vehicle_num }}</td>
         </tr>
          {% endfor %}
