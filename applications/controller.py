@@ -408,7 +408,8 @@ def spot_status_chart(occupied,available):
         colors=colors,
         autopct='%1.1f%%',
         pctdistance=1.25,
-        startangle=45
+        startangle=45,
+        textprops={"fontsize":5}
     )
 
 
@@ -430,7 +431,7 @@ def revenue_chart(data):
     plt.ylabel('Revenue (₹)',fontsize=20)
     plt.xticks(rotation=45,fontsize=20)
     plt.yticks(fontsize=20)
-    plt.ylim(0, max(revenue) * 1.2)
+    #plt.ylim(0, max(revenue) * 1.2)
     plt.tight_layout()
     plt.savefig("static/revenue_bar_chart.png", dpi=200, bbox_inches="tight")
     plt.close()
