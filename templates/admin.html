@@ -9,16 +9,18 @@
 </head>
 <body>
     <div class="container py-4">
-        <div class="container mt-0">
+        <div class="container">
             <div class="bg-white shadow-sm">
-    <div class="card-body p-0">
+    <div class="card-body">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary px-4">
 <a class="navbar-brand" href="#" style="color: white;">Home</a>
       <div class="collapse navbar-collapse justify-content-between" id="navbarContent">
     <form class="d-flex align-items-center" method="POST" action="/admin_search">
       <select class="form-select me-2" name="field" style="width: auto;">
-        <option value="user_id/username">User id/Username</option>
-        <option value="lot_name/location">Parking Lot Name/ Location</option>
+        <option value="user_id">User id</option>
+        <option value="lot_name">Parking Lot Name</option>
+        <option value="username">Username</option>
+        <option value="location">Location</option>
       </select>
       <input class="text" type="search" name="string" placeholder="Search..." required>
       <button class="btn btn-outline-light" type="submit">Search</button>
@@ -36,8 +38,18 @@
 
      </div>
      </div>
-     <hr>
-        <form action="/admin",method='POST'>
+     <hr> 
+     {% if string %}
+     {% if parkinglots %}
+    <em>Matching result for "{{string}}" in "{{field}}"</em>
+   {% else %}
+     <div style="text-align: center; margin-top: 200px;">
+        <em>No matching record for "{{string}}" in "{{field}}"</em><br>
+        <em><a href="/admin">Go  Back to Admin Dashboard</a></em>
+     </div>
+     {% endif %}
+     {% endif %}
+
     <div class="row g-4">
         {% for lot in parkinglots %}
         <div class="col-sm-6 col-md-4">
@@ -66,7 +78,7 @@
                     </div>
 
 
-                    <div class="mb-3">
+                    <div class="mb-2">
                         <p class="mb-1">
                             <i class="bi bi-geo-alt-fill text-danger me-1"></i>
                             <strong>Location:</strong> {{ lot.location }}
@@ -101,12 +113,14 @@
         </div>
         {% endfor %}
     </div>
+    {% if not string%}
     <div class="text-center mt-4">
         <a href="/new_lot" class="btn btn-success btn-lg">
             <i class="bi bi-plus-circle me-1"></i> Add New Lot
         </a>
     </div>
-    </form>
+    {% endif %}
+  
 </div>
 
     

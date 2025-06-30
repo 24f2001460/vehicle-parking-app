@@ -62,8 +62,10 @@
             <!-- Searching-->
   <form class="d-flex" role="search" method="POST" action="/user_search/{{user.id}}" style="gap: 10px;">
     <select class="text" name="field" style="width: 150px;">
-      <option value="lot_id/lot_name">Lot id/Lot Name</option>
-      <option value="location/pincode">Location/Pincode</option>
+      <option value="lot_id">Lot id</option>
+      <option value="lot_name">Lot Name</option>
+      <option value="location">Location</option>
+      <option value="pincode">Pincode</option>
     </select>
 
     <input class="form-control" type="search" name="string" placeholder="Search..." aria-label="Search" required>
@@ -82,7 +84,16 @@
       <div class="mx-4 mt-4" style="background: linear-gradient(to right, #007bff, #0056b3); color: white; padding: 15px 20px; border-radius: 10px 10px 0 0;">
         <h4 class="m-0">Available Parking Lots</h4>
       </div>
-
+      {% if string %}
+        {% if lots %}
+        <em>Matching result for "{{string}}" in "{{field}}"</em>
+        {% else %}
+        <div style="text-align: center; margin-top: 200px;">
+        <em>No matching record for "{{string}}" in "{{field}}"</em><br>
+        <em><a href="/user/{{user.id}}">Go  Back to Dashboard</a></em>
+     </div>
+     {% endif %}
+     {% endif %}
   
       <div class="container mt-4">
         <div class="row">

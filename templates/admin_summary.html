@@ -12,8 +12,10 @@
       <div class="collapse navbar-collapse justify-content-between" id="navbarContent">
     <form class="d-flex align-items-center" method="POST" action="/admin_search">
       <select class="form-select me-2" name="field" style="width: auto;">
-        <option value="user_id/username">User id/Username</option>
-        <option value="lot_name/location">Parking Lot Name/ Location</option>
+        <option value="user_id">User id</option>
+        <option value="lot_name">Parking Lot Name</option>
+        <option value="username">Username</option>
+        <option value="location">Location</option>
       </select>
       <input class="text" type="search" name="string" placeholder="Search..." required>
       <button class="btn btn-outline-light" type="submit">Search</button>

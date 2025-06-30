@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 <style>
   body {
-    background-color:whitesmoke; 
+    background-color:white; 
   }
   #canvas {
     background: #fff;
@@ -29,8 +29,10 @@
       <div class="collapse navbar-collapse justify-content-between" id="navbarContent">
     <form class="d-flex align-items-center" method="POST" action="/admin_search">
       <select class="form-select me-2" name="field" style="width: auto;">
-        <option value="user_id/username">User id/Username</option>
-        <option value="lot_name/location">Parking Lot Name/ Location</option>
+        <option value="user_id">User id</option>
+        <option value="lot_name">Parking Lot Name</option>
+        <option value="username">Username</option>
+        <option value="location">Location</option>
       </select>
       <input class="text" type="search" name="string" placeholder="Search..." required>
       <button class="btn btn-outline-light" type="submit">Search</button>
@@ -42,9 +44,20 @@
     </strong>
   </div>
     </nav>
+    {% if string %}
+      {% if users %}
+      <em>Matching result for "{{string}}" in "{{field}}"</em>
+      {% else %}
+        <div style="text-align: center; margin-top: 200px;">
+          <em>No Matching record for "{{string}} in "{{field}}"</em><br>
+          <em><a href="/admin">Go Back to Admin Dashboard</a></em>
+        </div>
+        {% endif %}
+        {% endif %}
     <div class="container">
   <div id="canvas">
-    <h3 class="text-center mb-2 text-white bg-primary">User's Details</h3>
+    {% if users %}
+     <h3 class="text-center mb-2 text-white bg-primary">User's Details</h3>
     <table class="table table-striped">
       <thead class="table-primary">
             <tr>
@@ -67,6 +80,7 @@
             {% endfor %}
         </tbody>
     </table>
+    {% endif %}
   </div>
     </div>
 </body>
