@@ -48,17 +48,20 @@ def signup():
 @app.route('/admin',methods=['GET','POST'])
 def admin():
     admin = User.query.filter(User.id==1).first()
-    string = request.args.get('q')
-    if not string or string=='*':
+    string = request.args.get('q1')
+    field=request.args.get('q2')
+    if not string:
         parkinglots = ParkingLot.query.all()
     else:
-        parkinglots = ParkingLot.query.filter(or_(ParkingLot.lot_name.ilike(f'%{string}%'),ParkingLot.location.ilike(f'%{string}%'))).all()
-
+        if field=='lot_name':
+            parkinglots = ParkingLot.query.filter(ParkingLot.lot_name.ilike(f'%{string}%')).all()
+        if field=='location':
+            parkinglots = ParkingLot.query.filter(ParkingLot.location.ilike(f'%{string}%')).all()
 
     for lot in parkinglots:
         lot.has_booking = any(spot.status == 'O' for spot in lot.parkingspots)
         lot.occupied_count=sum(1 for spot in lot.parkingspots if spot.status=='O')
-    return render_template('admin.html',parkinglots=parkinglots,admin=admin)
+    return render_template('admin.html',parkinglots=parkinglots,admin=admin,string=string,field=field)
 
 
 @app.route('/new_lot',methods=['GET','POST'])
@@ -131,11 +134,15 @@ def user(user_id):
     if not string:
         lots = ParkingLot.query.all()
     else:
-        if field=='lot_id/lot_name':
-            lots = ParkingLot.query.filter(or_(ParkingLot.id.ilike(f'%{string}%'),ParkingLot.lot_name.ilike(f'%{string}%'))).all()
-        elif field=='location/pincode':
-            lots = ParkingLot.query.filter(or_(ParkingLot.location.ilike(f'%{string}%'),ParkingLot.pincode.ilike(f'%{string}%'))).all()
-    return render_template('user.html',user=user,lots=lots)
+        if field=="lot_id":
+            lots = ParkingLot.query.filter(ParkingLot.id.ilike(f'%{string}%')).all()
+        if field=="lot_name":
+            lots=ParkingLot.query.filter(ParkingLot.lot_name.ilike(f'%{string}%')).all()
+        if field=='location':
+            lots = ParkingLot.query.filter(ParkingLot.location.ilike(f'%{string}%')).all()
+        if field=='pincode':
+            lots=ParkingLot.query.filter(ParkingLot.pincode.ilike(f'%{string}%')).all()
+    return render_template('user.html',user=user,lots=lots,string=string,field=field)
 
 @app.route("/reserve/<int:user_id>/<int:lot_id>",methods=['GET','POST'])
 def reserve(user_id,lot_id):
@@ -453,34 +460,34 @@ def reservation_count_chart(data):
 
 @app.route('/user_list', methods=['GET','POST'])
 def user_list():
-    string = request.args.get('q')
-    if not string or string=='*':
+    string = request.args.get('q1')
+    field=request.args.get('q2')
+    if not string:
         users = User.query.filter(User.id!=1).all()
     else:
-        users = User.query.filter(User.id!=1,or_(User.username.ilike(f'%{string}%'),User.id.ilike(f'%{string}%'))).all()
+        if field=='user_id':
+            users = User.query.filter(User.id!=1,User.id.ilike(f'%{string}%')).all()
+        if field=='username':
+            users = User.query.filter(User.id!=1,User.username.ilike(f'%{string}%')).all()
 
-    return render_template('user_list.html',users=users)
+    return render_template('user_list.html',users=users,string=string,field=field)
 
 @app.route('/admin_search',methods=['GET','POST'])
 def admin_search():
     string=request.form.get('string')
     field=request.form.get('field')
     
-    if field=="user_id/username":
-        return redirect(url_for('user_list', q=string))
-    if field=='lot_name/location':
-        return redirect(url_for('admin',q=string))
+    if field=="user_id" or field=="username":
+        return redirect(url_for('user_list',q1=string,q2=field))
+    if field=="lot_name" or field=="location":
+        return redirect(url_for('admin',q1=string,q2=field))
         
 
 @app.route("/user_search/<int:user_id>", methods=['GET','POST'])
 def user_search(user_id):
     string = request.form.get('string')
     field = request.form.get('field')
-    
-    if field=="lot_id/lot_name":
-        return redirect(url_for('user',user_id=user_id,q1=string,q2=field))
-    if field=="location/pincode":
-        return redirect(url_for('user',user_id=user_id,q1=string,q2=field))
+    return redirect(url_for('user',user_id=user_id,q1=string,q2=field))
 
 
 @app.route("/read_available_spot/<int:spot_id>/<int:lot_id>",methods=['GET','POST'])
@@ -500,5 +507,5 @@ def read_available_spot(spot_id,lot_id):
                     return redirect('/admin')
             return render_template('read_available_spot.html',spot=spot,lot=lot)
         return render_template('incorrect_spot_id.html')
-    return render_template('incorrect_lot_id.html')
+    return render_template('incorrect_lot')
 
