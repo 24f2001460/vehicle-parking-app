@@ -6,7 +6,6 @@ import matplotlib
 matplotlib.use("agg")
 import matplotlib.pyplot as plt
 from collections import Counter, defaultdict
-from sqlalchemy import or_
 
 
 
