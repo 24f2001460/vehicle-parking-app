@@ -24,7 +24,7 @@
                     <span class="input-group-text bg-primary text-white" >
                         <i class="bi bi-signpost-2-fill me-1"></i>
                     </span>
-                <input type="text" class="form-control" id="lot_name" name="lot_name" placeholder="Enter_lot_name" >
+                <input type="text" class="form-control" id="lot_name" name="lot_name" placeholder="Enter_lot_name" required>
             </div>
             </div>
             <div class="mb-3">
@@ -33,7 +33,7 @@
                      <span class="input-group-text bg-primary text-white">
                         <i class="bi bi-geo-alt-fill"></i>  
                     </span>
-                <input type="text" class="form-control" id="location" name="location" placeholder="Enter_location">
+                <input type="text" class="form-control" id="location" name="location" placeholder="Enter_location" required>
             </div>
             </div>
             <div class="mb-3">
@@ -42,7 +42,7 @@
                      <span class="input-group-text bg-primary text-white">
                         <i class="bi bi-mailbox-flag text-success me-1"></i>
                     </span>
-                <input type="integer" class="form-control" id="pincode" name="pincode" placeholder="Enter_pincode" >
+                <input type="integer" class="form-control" id="pincode" name="pincode" placeholder="Enter_pincode" required>
             </div>
             </div>
             <div class="mb-3">
@@ -51,7 +51,7 @@
                      <span class="input-group-text bg-primary text-white">
                          <i class="bi bi-currency-rupee"></i> 
                     </span>
-                <input type="integer" class="form-control" id="price" name="price" placeholder="Enter_price">
+                <input type="integer" class="form-control" id="price" name="price" placeholder="Enter_price" required>
                 </div>
             </div>
             <div class="mb-3">
@@ -60,13 +60,13 @@
                      <span class="input-group-text bg-primary text-white">
                         <i class="bi bi-car-front-fill text-warning me-1"></i>
                     </span>
-                <input type="integer" class="form-control" id="max_spot" name="max_spot" placeholder="Enter_total_spots">
+                <input type="integer" class="form-control" id="max_spot" name="max_spot" placeholder="Enter_total_spots" required>
                 </div>
             </div>
             <button type="submit" class="btn btn-primary btn-lg w-100 mb-2" value="Save" name="action">
                 <i class="bi bi-save2"></i> Save
             </button>
-            <button type="submit" class="btn btn-outline-danger btn-lg w-100" value="Cancel" name="action">
+            <button type="submit" class="btn btn-outline-danger btn-lg w-100" value="Cancel" name="action" formnovalidate>
                 <i class="bi bi-x-circle"></i> Cancel
             </button>
             </form>
